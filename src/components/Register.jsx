@@ -1,23 +1,62 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import backgroundImg from "../assets/image.png";
+import "./Form.css";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [agreeTerms, setAgreeTerms] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const navigate = useNavigate();
+
+  const isValidEmail = (email) => {
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return pattern.test(email);
+  };
+
+  const disposableDomains = [
+    "tempmail.com", "mailinator.com", "10minutemail.com",
+    "guerrillamail.com", "yopmail.com", "fakeinbox.com",
+    "throwawaymail.com", "trashmail.com"
+  ];
+
+  const isDisposableEmail = (email) => {
+    const domain = email.split("@")[1]?.toLowerCase() || "";
+    return disposableDomains.includes(domain);
+  };
 
   const handleRegister = (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !confirmPassword) {
       setError("All fields are required.");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (isDisposableEmail(email)) {
+      setError("Disposable or temporary email addresses are not allowed.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    if (!agreeTerms) {
+      setError("You must agree to the terms and conditions.");
       return;
     }
 
@@ -29,19 +68,26 @@ const Register = () => {
 
   return (
     <div
-      className="min-h-screen bg-cover bg-center flex items-center justify-center px-4"
-      style={{ backgroundImage: `url(${backgroundImg})` }}
+      className="hero-section"
+      style={{
+        backgroundImage: `url(${backgroundImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+      }}
     >
-      <div className="bg-black/70 backdrop-blur-md p-8 rounded-lg shadow-lg w-full max-w-md text-white">
-        <h2 className="text-2xl font-bold mb-6 text-center">Create LifeBox Account</h2>
-        <form onSubmit={handleRegister} className="space-y-4">
+      <div className="form-container">
+        <h2>Create LifeBox Account</h2>
+        <form onSubmit={handleRegister} className="login-form">
           <input
             type="text"
             placeholder="Full Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="w-full px-4 py-2 rounded-md bg-white/90 text-black focus:outline-none focus:ring-2 focus:ring-cyan-400"
           />
           <input
             type="email"
@@ -49,7 +95,6 @@ const Register = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-2 rounded-md bg-white/90 text-black focus:outline-none focus:ring-2 focus:ring-cyan-400"
           />
           <input
             type="password"
@@ -57,18 +102,31 @@ const Register = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full px-4 py-2 rounded-md bg-white/90 text-black focus:outline-none focus:ring-2 focus:ring-cyan-400"
           />
-
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-          {success && <p className="text-green-500 text-sm">{success}</p>}
-
-          <button
-            type="submit"
-            className="w-full bg-cyan-500 hover:bg-cyan-600 text-white py-2 rounded-md font-medium transition-colors duration-300"
-          >
-            Register
-          </button>
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+          <div className="terms">
+            <input
+              type="checkbox"
+              id="terms"
+              checked={agreeTerms}
+              onChange={(e) => setAgreeTerms(e.target.checked)}
+            />
+            <label htmlFor="terms">
+              I agree to the{" "}
+              <a href="/terms" target="_blank" rel="noopener noreferrer">
+                terms and conditions
+              </a>
+            </label>
+          </div>
+          {error && <p className="error">{error}</p>}
+          {success && <p className="success">{success}</p>}
+          <button type="submit">Register</button>
         </form>
       </div>
     </div>

@@ -62,3 +62,33 @@ form button:hover {
   color: #4caf50;
   margin-top: 10px;
 }
+.terms {
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.terms input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  accent-color: #4caf50; /* green checkbox color */
+  cursor: pointer;
+}
+
+.terms label {
+  display: flex;
+  align-items: center;
+}
+
+.terms a {
+  color: #4caf50;
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+.terms a:hover {
+  text-decoration: underline;
+}
