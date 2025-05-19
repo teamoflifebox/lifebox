@@ -1,0 +1,64 @@
+
+.hero-section {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  position: relative;
+  padding: 20px;
+}
+.form-container {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  max-width: 400px;
+  width: 100%;
+  pointer-events: auto;
+  z-index: 999;
+  position: relative;
+  text-align: center;
+  color: #fff;
+}
+form input {
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  color: black;
+}
+form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  margin-top: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+form button:hover {
+  background-color: #0056b3;
+}
+.error {
+  color: #ff4d4d;
+  margin-top: 10px;
+}
+
+.success {
+  color: #4caf50;
+  margin-top: 10px;
+}
