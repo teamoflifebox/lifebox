@@ -3,7 +3,8 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useNavigate } from "react-router-dom";
 import backgroundImg from "../assets/image.png";
 
-const RECAPTCHA_SITE_KEY = "6Ld5Mj4rAAAAAEXD-hziHWTKkv75PqHF0XiURL1j";
+// Use your key from .env
+const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,30 +15,51 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  const isValidEmail = (email) => {
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return pattern.test(email);
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
+    const trimmedEmail = email.trim();
     const storedUser = JSON.parse(localStorage.getItem("user"));
 
-    if (!email || !password) {
+    if (!trimmedEmail || !password) {
       setError("Please fill in all fields.");
-    } else if (!captchaValue) {
-      setError("Please complete the reCAPTCHA.");
-    } else if (
-      storedUser &&
-      storedUser.email === email &&
-      storedUser.password === password
-    ) {
-      setSuccess("Login successful!");
-      console.log("Logging in:", { email, password });
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1000);
-    } else {
-      setError("Account not found.");
+      return;
     }
+
+    if (!isValidEmail(trimmedEmail)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (!captchaValue) {
+      setError("Please complete the reCAPTCHA.");
+      return;
+    }
+
+    if (!storedUser) {
+      setError("No registered account found. Please register first.");
+      return;
+    }
+
+    if (
+      storedUser.email !== trimmedEmail ||
+      storedUser.password !== password
+    ) {
+      setError("Incorrect email or password.");
+      return;
+    }
+
+    setSuccess("Login successful!");
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 1000);
   };
 
   return (
@@ -67,13 +89,19 @@ const Login = () => {
             className="w-full p-3 rounded-lg border border-gray-300 bg-white/80 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <div className="flex justify-center">
-            <ReCAPTCHA
-              sitekey={RECAPTCHA_SITE_KEY}
-              onChange={(value) => {
-                setCaptchaValue(value);
-                setError("");
-              }}
-            />
+            {RECAPTCHA_SITE_KEY ? (
+              <ReCAPTCHA
+                sitekey={RECAPTCHA_SITE_KEY}
+                onChange={(value) => {
+                  setCaptchaValue(value);
+                  setError("");
+                }}
+              />
+            ) : (
+              <p className="text-red-400 text-sm">
+                reCAPTCHA site key missing in environment.
+              </p>
+            )}
           </div>
           {error && (
             <p className="text-red-400 text-sm font-medium">{error}</p>

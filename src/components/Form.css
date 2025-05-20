@@ -92,3 +92,27 @@ form button:hover {
 .terms a:hover {
   text-decoration: underline;
 }
+.strength {
+  font-size: 0.9rem;
+  margin-top: -8px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.strength.weak {
+  color: red;
+}
+
+.strength.medium {
+  color: orange;
+}
+
+.strength.strong {
+  color: green;
+}
+button[type="button"] {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+

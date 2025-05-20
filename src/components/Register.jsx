@@ -11,13 +11,11 @@ const Register = () => {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [passwordStrength, setPasswordStrength] = useState("");
 
   const navigate = useNavigate();
 
-  const isValidEmail = (email) => {
-    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return pattern.test(email);
-  };
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const disposableDomains = [
     "tempmail.com", "mailinator.com", "10minutemail.com",
@@ -30,10 +28,24 @@ const Register = () => {
     return disposableDomains.includes(domain);
   };
 
+  const checkPasswordStrength = (pwd) => {
+    if (pwd.length < 6) return "Weak";
+    const hasLetters = /[a-zA-Z]/.test(pwd);
+    const hasNumbers = /[0-9]/.test(pwd);
+    const hasSymbols = /[!@#$%^&*(),.?":{}|<>]/.test(pwd);
+
+    if (pwd.length >= 8 && hasLetters && hasNumbers && hasSymbols) return "Strong";
+    if (hasLetters && hasNumbers) return "Medium";
+    return "Weak";
+  };
+
   const handleRegister = (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
+
+    const strength = checkPasswordStrength(password);
+    setPasswordStrength(strength);
 
     if (!name || !email || !password || !confirmPassword) {
       setError("All fields are required.");
@@ -52,6 +64,11 @@ const Register = () => {
 
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
+      return;
+    }
+
+    if (strength === "Weak") {
+      setError("Password is too weak. Use letters, numbers, and symbols.");
       return;
     }
 
@@ -100,9 +117,17 @@ const Register = () => {
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordStrength(checkPasswordStrength(e.target.value));
+            }}
             required
           />
+          {password && (
+            <p className={`strength ${passwordStrength.toLowerCase()}`}>
+              Password Strength: {passwordStrength}
+            </p>
+          )}
           <input
             type="password"
             placeholder="Confirm Password"
