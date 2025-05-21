@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import lifeboxBg from "../assets/image.png";
 
 const Home = () => {
   const navigate = useNavigate();
 
+  // Disable scrolling on mount, restore on unmount
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
   return (
     <div
-      className="h-screen w-full relative flex justify-center items-center overflow-hidden p-4 sm:p-6 bg-cover bg-center bg-no-repeat animate-backgroundZoom before:absolute before:inset-0 before:bg-gradient-to-br before:from-black/60 before:to-black/30 before:backdrop-blur-sm before:z-[1]"
+      className="fixed inset-0 z-30 w-full h-screen bg-cover bg-center bg-no-repeat flex justify-center items-center overflow-hidden p-4 sm:p-6 animate-backgroundZoom before:absolute before:inset-0 before:bg-gradient-to-br before:from-black/60 before:to-black/30 before:backdrop-blur-sm before:z-[1]"
       style={{
         backgroundImage: `url(${lifeboxBg})`,
       }}

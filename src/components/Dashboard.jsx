@@ -16,7 +16,7 @@ const Dashboard = () => {
         <h1 className="text-3xl sm:text-5xl font-bold mb-2">
           Welcome to{" "}
           <span className="bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
-            LifeBox Notion
+            LifeBox NextGen
           </span>
         </h1>
         <p className="text-base sm:text-lg mb-8 text-gray-200">
@@ -55,7 +55,6 @@ const Dashboard = () => {
 
         <button
           className="mt-8 bg-transparent border border-white/50 text-white/80 px-5 py-2 rounded-full text-sm hover:bg-white/20 transition-all duration-300"
-          onClick={() => navigate("/dashboard")}
         >
           Skip Introduction
         </button>

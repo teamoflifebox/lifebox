@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useNavigate } from "react-router-dom";
 import backgroundImg from "../assets/image.png";
 
-// Use your key from .env
 const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
 
 const Login = () => {
@@ -15,10 +14,14 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const isValidEmail = (email) => {
-    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return pattern.test(email);
-  };
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -58,13 +61,13 @@ const Login = () => {
 
     setSuccess("Login successful!");
     setTimeout(() => {
-      navigate("/dashboard");
+      navigate("/user-dashboard");
     }, 1000);
   };
 
   return (
     <div
-      className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex items-center justify-center p-4 sm:p-6 relative before:absolute before:inset-0 before:bg-gradient-to-br before:from-black/60 before:to-black/30 before:backdrop-blur-sm before:z-[1]"
+      className="fixed inset-0 z-30 w-full h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center p-4 sm:p-6 before:absolute before:inset-0 before:bg-gradient-to-br before:from-black/60 before:to-black/30 before:backdrop-blur-sm before:z-[1]"
       style={{ backgroundImage: `url(${backgroundImg})` }}
     >
       <div className="relative z-[2] bg-white/15 border border-white/20 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 w-full max-w-md mx-auto text-center shadow-2xl">

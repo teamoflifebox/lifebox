@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import backgroundImg from "../assets/image.png";
-import "./Form.css";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -11,9 +10,15 @@ const Register = () => {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [passwordStrength, setPasswordStrength] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
 
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -28,24 +33,10 @@ const Register = () => {
     return disposableDomains.includes(domain);
   };
 
-  const checkPasswordStrength = (pwd) => {
-    if (pwd.length < 6) return "Weak";
-    const hasLetters = /[a-zA-Z]/.test(pwd);
-    const hasNumbers = /[0-9]/.test(pwd);
-    const hasSymbols = /[!@#$%^&*(),.?":{}|<>]/.test(pwd);
-
-    if (pwd.length >= 8 && hasLetters && hasNumbers && hasSymbols) return "Strong";
-    if (hasLetters && hasNumbers) return "Medium";
-    return "Weak";
-  };
-
   const handleRegister = (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
-
-    const strength = checkPasswordStrength(password);
-    setPasswordStrength(strength);
 
     if (!name || !email || !password || !confirmPassword) {
       setError("All fields are required.");
@@ -67,11 +58,6 @@ const Register = () => {
       return;
     }
 
-    if (strength === "Weak") {
-      setError("Password is too weak. Use letters, numbers, and symbols.");
-      return;
-    }
-
     if (!agreeTerms) {
       setError("You must agree to the terms and conditions.");
       return;
@@ -85,26 +71,21 @@ const Register = () => {
 
   return (
     <div
-      className="hero-section"
-      style={{
-        backgroundImage: `url(${backgroundImg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-      }}
+      className="fixed inset-0 z-30 w-full h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center p-4 sm:p-6 before:absolute before:inset-0 before:bg-gradient-to-br before:from-black/60 before:to-black/30 before:backdrop-blur-sm before:z-[1]"
+      style={{ backgroundImage: `url(${backgroundImg})` }}
     >
-      <div className="form-container">
-        <h2>Create LifeBox Account</h2>
-        <form onSubmit={handleRegister} className="login-form">
+      <div className="relative z-[2] bg-white/15 border border-white/20 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 w-full max-w-md mx-auto text-center shadow-2xl">
+        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6">
+          Create LifeBox Account
+        </h2>
+        <form onSubmit={handleRegister} className="flex flex-col gap-4 text-left">
           <input
             type="text"
             placeholder="Full Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            className="w-full p-3 rounded-lg border border-gray-300 bg-white/80 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="email"
@@ -112,46 +93,47 @@ const Register = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="w-full p-3 rounded-lg border border-gray-300 bg-white/80 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setPasswordStrength(checkPasswordStrength(e.target.value));
-            }}
+            onChange={(e) => setPassword(e.target.value)}
             required
+            className="w-full p-3 rounded-lg border border-gray-300 bg-white/80 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          {password && (
-            <p className={`strength ${passwordStrength.toLowerCase()}`}>
-              Password Strength: {passwordStrength}
-            </p>
-          )}
           <input
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            className="w-full p-3 rounded-lg border border-gray-300 bg-white/80 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <div className="terms">
+          <div className="flex items-center text-white text-sm gap-2">
             <input
               type="checkbox"
               id="terms"
               checked={agreeTerms}
               onChange={(e) => setAgreeTerms(e.target.checked)}
+              className="w-4 h-4"
             />
-            <label htmlFor="terms">
+            <label htmlFor="terms" className="text-white">
               I agree to the{" "}
-              <a href="/terms" target="_blank" rel="noopener noreferrer">
+              <a href="/terms" className="underline text-blue-300" target="_blank" rel="noopener noreferrer">
                 terms and conditions
               </a>
             </label>
           </div>
-          {error && <p className="error">{error}</p>}
-          {success && <p className="success">{success}</p>}
-          <button type="submit">Register</button>
+          {error && <p className="text-red-400 text-sm font-medium">{error}</p>}
+          {success && <p className="text-green-400 text-sm font-medium">{success}</p>}
+          <button
+            type="submit"
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-300"
+          >
+            Register
+          </button>
         </form>
       </div>
     </div>
