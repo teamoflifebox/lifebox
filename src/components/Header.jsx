@@ -11,6 +11,7 @@ function Header() {
   const navLinks = [
     { name: 'Home', to: '/' },
     { name: 'Dairy', to: '/dairy' },
+    { name: 'Memories', to: '/memories' },
     { name: 'Library', to: '/library' },
     { name: 'TimeCapsule', to: '/timecapsule' },
     { name: 'Editing', to: '/editing' },

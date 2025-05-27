@@ -34,6 +34,12 @@ function Home() {
       description: 'Create messages and media for the future.',
       icon: Clock,
     },
+    {
+      to: '/memories',
+      title: 'Memories',
+      description: 'Create messages and media for the future.',
+      icon: Clock,
+    }
   ];
 
   return (
