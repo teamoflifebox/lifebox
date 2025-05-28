@@ -20,6 +20,8 @@ import UserDashboard from "./screens/UserDashboard";
 import Terms from "./components/Terms";
 import VideoEdit from "./pages/VideoEdit";
 import PhotoAlbumEditor from "./pages/PhotoAlbumEditor";
+import Memories from "./pages/Memories";
+
 
 function App() {
   return (
@@ -33,6 +35,7 @@ function App() {
           <Route path="/community" element={<Community />} />
           <Route path="/dairy" element={<Dairy />} />\
           <Route path="/editing" element={<Editing />} />
+          <Route path="/memories" element={<Memories />} />
           <Route path="/library" element={<Library />} />
           <Route path="/timecapsule" element={<TimeCapsule />} />
           <Route path="/saved" element={<SavedDiaries />} />
