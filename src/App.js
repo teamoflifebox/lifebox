@@ -32,6 +32,7 @@ function App() {
           <Route path="/" element={<Home />}/>
           <Route path="/login" element={<Login />}/>
           <Route path="/register" element={<Register />} />
+          <Route element={<ProtectedRoute />} >
           <Route path="/community" element={<Community />} />
           <Route path="/dairy" element={<Dairy />} />\
           <Route path="/editing" element={<Editing />} />
@@ -45,9 +46,9 @@ function App() {
           <Route path="/library/recent" element={<RecentLibrary />} />
           <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/terms" element={<Terms />} />
-          <Route element={<ProtectedRoute />} />
           <Route path="/photo-album/new" element={<PhotoAlbumEditor />} />
           <Route path="/video-editor/new" element={<VideoEditor />} />
+          </Route>
         </Routes>
         <Footer />
       </Router>
