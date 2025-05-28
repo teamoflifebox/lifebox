@@ -7,6 +7,9 @@ import FeatureCard from '../components/FeatureCard';
 function Editing() {
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-100">
+      <div>
+
+      </div>
       <div className="max-w-7xl mx-auto">
         <SectionTitle
           id="editing"
@@ -15,37 +18,24 @@ function Editing() {
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <FeatureCard
-            icon={Scissors}
-            title="Video Trimming"
-            description="Easily trim and edit your videos to capture the perfect moment"
-            onClick={() => console.log('Video Trimming clicked')}
-            className="border-t-4 border-blue-600"
-          />
+ 
 
-          <FeatureCard
-            icon={Image}
-            title="Photo Editing"
-            description="Basic photo editing tools to enhance your visual memories"
-            onClick={() => console.log('Photo Editing clicked')}
-            className="border-t-4 border-green-600"
-          />
+<FeatureCard
+  icon={Users}
+  title="Family Vault"
+  description="Share and explore memories with your family members"
+  to="/family-vault"
+  className="border-t-4 border-orange-600"
+/>
 
-          <FeatureCard
-            icon={Users}
-            title="Family Vault"
-            description="Share and explore memories with your family members"
-            onClick={() => console.log('Family Vault clicked')}
-            className="border-t-4 border-orange-600"
-          />
+<FeatureCard
+  icon={Star}
+  title="Memory Enhancer"
+  description="AI-powered tools to improve and organize your memories"
+  to="/memory-enhancer"
+  className="border-t-4 border-purple-600"
+/>
 
-          <FeatureCard
-            icon={Star}
-            title="Memory Enhancer"
-            description="AI-powered tools to improve and organize your memories"
-            onClick={() => console.log('Memory Enhancer clicked')}
-            className="border-t-4 border-purple-600"
-          />
         </div>
 
         <div className="mt-12 bg-gradient-to-r from-blue-50 to-gray-50 rounded-lg p-8 shadow-lg">

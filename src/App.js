@@ -18,6 +18,8 @@ import JoinVault from "./screens/JoinVault";
 import RecentLibrary from "./components/RecentLibrary";
 import UserDashboard from "./screens/UserDashboard";
 import Terms from "./components/Terms";
+import VideoEdit from "./pages/VideoEdit";
+import PhotoAlbumEditor from "./pages/PhotoAlbumEditor";
 
 function App() {
   return (
@@ -41,6 +43,8 @@ function App() {
           <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/terms" element={<Terms />} />
           <Route element={<ProtectedRoute />} />
+          <Route path="/video-trimming" element={<VideoEdit />} /> 
+          <Route path="/photo-album/new" element={<PhotoAlbumEditor />} />
         </Routes>
         <Footer />
       </Router>

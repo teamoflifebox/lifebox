@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+
 function UserDashboard() {
   const [user, setUser] = useState(null);
   const [stats, setStats] = useState({ diaries: 0, vaults: 0, libraryItems: 0 });
+  
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
@@ -69,6 +71,7 @@ function UserDashboard() {
           </div>
         </div>
       </div>
+      
     </div>
   );
 }
