@@ -120,10 +120,10 @@ import UserDashboard from './screens/UserDashboard';
 import Terms from './components/Terms';
 import PhotoAlbumEditor from './pages/PhotoAlbumEditor';
 import Memories from './pages/Memories';
-import VideoEditor from './pages/VideoEditor';
+import VideoEditor from './pages/VideoEditor.jsx';
 import CapsuleList from './components/CapsuleList';
 import CreateCapsule from './components/CreateCapsule';
-import { CapsuleProvider } from './components/CapsuleContext';
+import { CapsuleProvider } from './components/CapsuleContext.jsx';
 
 // Error Boundary component to catch runtime errors
 class ErrorBoundary extends React.Component {
@@ -169,7 +169,7 @@ function TimeCapsule() {
             <CreateCapsule setView={setView} />
           )}
         </main>
-        
+      
       </div>
     </CapsuleProvider>
   );
@@ -178,7 +178,6 @@ function TimeCapsule() {
 function App() {
   return (
     <div className="flex flex-col min-h-screen">
-      
       <Router>
         <Header />
         <main className="flex-grow">
@@ -190,7 +189,7 @@ function App() {
             <Route path="/terms" element={<Terms />} />
 
             {/* Protected Routes */}
-            <Route element={<ProtectedRoute />} />
+            <Route element={<ProtectedRoute />} /> 
               <Route path="/community" element={<Community />} />
               <Route path="/dairy" element={<Dairy />} />
               <Route path="/editing" element={<Editing />} />

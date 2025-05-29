@@ -1,5 +1,4 @@
-import React, { useState, useRef} from 'react';
-// import { Link } from 'react-router-dom';
+import React, { useState, useRef } from 'react';
 
 function Dairy() {
   const [started, setStarted] = useState(false);
@@ -139,17 +138,32 @@ function Dairy() {
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       {!started ? (
-        <div className="text-center mt-20 max-w-2xl mx-auto">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">📓 AI Diary</h1>
-          <p className="text-gray-600 mb-6 text-lg">
-            Capture your thoughts with voice, text, or translation, and secure them like a true diary.
-          </p>
-          <button
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold uppercase tracking-wide"
-            onClick={() => setStarted(true)}
-          >
-            ✨ Start Writing
-          </button>
+        <div className="text-center mt-20 max-w-3xl mx-auto px-4">
+         <div className="bg-gradient-to-br from-blue-50 via-white to-purple-100 py-20 px-6 md:px-12 lg:px-24 text-center rounded-xl shadow-2xl max-w-5xl mx-auto animate-fade-in">
+  <h1 className="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-purple-600 to-pink-500 mb-6 leading-tight drop-shadow-lg">
+    Welcome to Your Lifebox NextGen Diary 📝
+  </h1>
+
+  <p className="text-gray-800 dark:text-gray-200 mb-8 text-lg md:text-xl font-medium leading-relaxed max-w-3xl mx-auto">
+    Express yourself in any language — using voice or text. Translate your thoughts instantly and store them
+    safely, just like a personal vault of memories.
+  </p>
+
+  <ul className="text-left text-gray-700 dark:text-gray-300 mb-10 space-y-4 text-lg md:text-xl font-semibold mx-auto max-w-xl pl-6 list-disc list-inside bg-white/70 backdrop-blur-md rounded-lg p-6 shadow-md border border-blue-200">
+    <li className="transition hover:translate-x-2 duration-300">✅ Speak or type your thoughts</li>
+    <li className="transition hover:translate-x-2 duration-300">✅ Translate to your favorite language</li>
+    <li className="transition hover:translate-x-2 duration-300">✅ Listen and feel your emotions</li>
+    <li className="transition hover:translate-x-2 duration-300">✅ Save securely to your personal diary</li>
+  </ul>
+
+  <button
+    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-purple-600 hover:to-pink-500 text-white px-10 py-4 rounded-full shadow-xl hover:scale-105 transition-transform duration-300 font-bold text-lg tracking-wide"
+    onClick={() => setStarted(true)}
+  >
+    🎤 Start Now
+  </button>
+</div>
+
         </div>
       ) : showLockScreen ? (
         <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
@@ -212,34 +226,34 @@ function Dairy() {
               {!isListening ? (
                 <button
                   onClick={startListening}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-semibold"
                 >
                   🎤 Start
                 </button>
               ) : (
                 <button
                   onClick={stopListening}
-                  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200 font-semibold"
+                  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 font-semibold"
                 >
                   🛑 Stop
                 </button>
               )}
               <button
                 onClick={handleTranslate}
-                className="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors duration-200 font-semibold"
+                className="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 font-semibold"
               >
                 🔁 Translate
               </button>
               <button
                 onClick={() => speakText(entry)}
-                className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors duration-200 font-semibold"
+                className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 font-semibold"
               >
                 🔊 Listen
               </button>
               <button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold disabled:opacity-50"
+                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 font-semibold disabled:opacity-50"
               >
                 💾 Save
               </button>
@@ -265,12 +279,13 @@ function Dairy() {
             value={entry}
             onChange={(e) => setEntry(e.target.value)}
             style={{
-              backgroundImage: `url('data:image/svg+xml;utf8,<svg height="40" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="39" x2="1000" y2="39" stroke="%23e5e7eb" stroke-width="1"/></svg>')`,
+              backgroundImage:
+                'url("data:image/svg+xml;utf8,<svg height=\'40\' xmlns=\'http://www.w3.org/2000/svg\'><line x1=\'0\' y1=\'39\' x2=\'1000\' y2=\'39\' stroke=\'%23e5e7eb\' stroke-width=\'1\'/></svg>")',
               backgroundRepeat: 'repeat-y',
+              backgroundSize: '100% 40px',
             }}
           />
 
-          {/* Translated Text Output */}
           {translatedText && (
             <div className="mt-6 bg-gray-50 border-l-4 border-blue-600 p-6 rounded-lg shadow-inner">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">🌐 Translated Version:</h3>
