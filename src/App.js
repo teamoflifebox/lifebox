@@ -3,7 +3,6 @@ import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import Header from "./components/Header";
 // import Footer from "./components/Footer";
 import Home from "./screens/Home";
-import About from "./components/About";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import Community from "./pages/Community";
@@ -19,25 +18,30 @@ import JoinVault from "./screens/JoinVault";
 import RecentLibrary from "./components/RecentLibrary";
 import UserDashboard from "./screens/UserDashboard";
 import Terms from "./components/Terms";
-import PhotoAlbumEditor from "./pages/PhotoAlbumEditor";
 import Memories from "./pages/Memories";
+import About from "./components/About";
+import { BookIcon } from 'lucide-react';
+
+
 
 
 function App() {
   return (
     <div>
+       
       <Router>
         <Header />
         <Routes>
-          <Route path="/" element={<Home />}/>
-          <Route path="/login" element={<Login />}/>
+          <Route path="/" element={<About />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/community" element={<Community />} />
-          <Route path="/dairy" element={<Dairy />} />\
+          <Route path="/dairy" element={<Dairy />} />
           <Route path="/editing" element={<Editing />} />
-          <Route path="/memories" element={<Memories />} />
           <Route path="/library" element={<Library />} />
           <Route path="/timecapsule" element={<TimeCapsule />} />
+          <Route path="/memories" element={<Memories />} />
           <Route path="/saved" element={<SavedDiaries />} />
           <Route path="/events" element={<Events />} />
           <Route path="/create-vault" element={<CreateVault />} />
@@ -45,11 +49,10 @@ function App() {
           <Route path="/library/recent" element={<RecentLibrary />} />
           <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/terms" element={<Terms />} />
+          {/* Protected Routes can be nested inside here if needed */}
           <Route element={<ProtectedRoute />} />
-          <Route path="/video-trimming" element={<VideoEdit />} /> 
-          <Route path="/photo-album/new" element={<PhotoAlbumEditor />} />
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </Router>
     </div>
   );

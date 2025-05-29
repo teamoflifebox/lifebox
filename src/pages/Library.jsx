@@ -1,135 +1,291 @@
 import React, { useState } from 'react';
-import { Mail, Book, Camera, Film, Headphones, PenTool, BookOpen, Upload } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import SectionTitle from '../components/SectionTitle';
-import FeatureCard from '../components/FeatureCard';
 
-function Library() {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentBook, setCurrentBook] = useState(null);
+const languages = ['English', 'Hindi', 'Telugu', 'Spanish', 'French', 'German', 'Italian', 'Arabic'];
+const genres = ['Science', 'History', 'Love', 'Fantasy', 'Mystery', 'Horror', 'Poetry', 'Adventure'];
 
-  const startTextToSpeech = async (text) => {
-    setIsPlaying(true);
-    setCurrentBook('Sample Book Title');
-    setTimeout(() => {
-      setIsPlaying(false);
-      setCurrentBook(null);
-    }, 2000);
+const Library = () => {
+  const [selectedLanguage, setSelectedLanguage] = useState('');
+  const [selectedGenre, setSelectedGenre] = useState('');
+  const [allBooks, setAllBooks] = useState([]);
+  const [books, setBooks] = useState([]);
+  const [diaryVisible, setDiaryVisible] = useState(false);
+  const [notes, setNotes] = useState('');
+  const [myBooks, setMyBooks] = useState([]);
+  const [voiceRate, setVoiceRate] = useState(1);
+
+  const fetchBooks = async () => {
+    if (!selectedGenre) {
+      alert("Please select a genre");
+      return;
+    }
+    try {
+      const response = await fetch(`https://openlibrary.org/subjects/${selectedGenre.toLowerCase()}.json?limit=30`);
+      const data = await response.json();
+      const sortedBooks = (data.works || []).sort((a, b) => a.title.localeCompare(b.title));
+      setAllBooks(sortedBooks);
+      applyLanguageFilter(sortedBooks, selectedLanguage);
+    } catch (error) {
+      console.error('API fetch failed:', error);
+    }
+  };
+
+  const applyLanguageFilter = (books, language) => {
+    if (!language) {
+      setBooks(books);
+    } else {
+      const filtered = books.filter(book =>
+        book.language && book.language.some(langCode => langCode.toLowerCase().includes(language.toLowerCase()))
+      );
+      setBooks(filtered.length ? filtered : books); // fallback if no match
+    }
+  };
+
+  const handleLanguageChange = (lang) => {
+    setSelectedLanguage(lang);
+    applyLanguageFilter(allBooks, lang);
+  };
+
+  const handleSaveNote = () => {
+    if (!notes.trim()) return;
+    alert('Note saved!');
+    setNotes('');
+  };
+
+  const handlePublishBook = () => {
+    if (!notes.trim()) return;
+    const newBook = { title: `Diary Note ${myBooks.length + 1}`, content: notes };
+    setMyBooks([...myBooks, newBook]);
+    alert('Diary converted to a book!');
+    setNotes('');
   };
 
   return (
-    <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-100">
-      <div className="max-w-7xl mx-auto">
-        <SectionTitle
-          id="library"
-          title="Memory Library"
-          subtitle="Your personal collection of moments, memories, and books"
-        />
+    <div className="library-container">
+      <style>{`
+        .library-container {
+          text-align: center;
+          padding: 20px;
+          background-color: #f7f7f7;
+          min-height: 100vh;
+          font-family: 'Segoe UI', sans-serif;
+        }
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <FeatureCard
-            icon={Mail}
-            title="Time Capsule"
-            description="Create digital time capsules with traditional letter options for future you"
-            onClick={() => console.log('Time Capsule clicked')}
-            className="border-t-4 border-blue-600"
-          />
+        .title {
+          font-size: 2.5rem;
+          font-weight: bold;
+          color: #333;
+          margin-bottom: 20px;
+        }
 
-          <FeatureCard
-            icon={Book}
-            title="Diary"
-            description="Record your daily thoughts and moments in a secure, private journal"
-            onClick={() => console.log('Diary clicked')}
-            className="border-t-4 border-green-600"
-          />
+        .selectors select, .fetch-btn, .save-btn, .convert-btn {
+          padding: 10px 15px;
+          margin: 10px;
+          font-size: 1rem;
+          border-radius: 6px;
+          border: 1px solid #ccc;
+          background-color: white;
+          color: #333;
+          cursor: pointer;
+          font-weight: 500;
+        }
 
-          <FeatureCard
-            icon={Camera}
-            title="Photo Collections"
-            description="Organize and browse your photos in beautiful collections"
-            onClick={() => console.log('Photo Collections clicked')}
-            className="border-t-4 border-orange-600"
-          />
+        .booklist-container {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap: 20px;
+          margin-top: 30px;
+          justify-items: center;
+        }
 
-          <FeatureCard
-            icon={Film}
-            title="Video Memories"
-            description="Store and revisit your favorite video moments with smart organization"
-            onClick={() => console.log('Video Memories clicked')}
-            className="border-t-4 border-purple-600"
-          />
-        </div>
+        .book-card {
+          background: #fff;
+          border: 1px solid #ddd;
+          border-radius: 10px;
+          padding: 15px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          max-width: 220px;
+          min-height: 360px;
+        }
 
-        <div className="mt-12">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">Digital Library</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <FeatureCard
-              icon={BookOpen}
-              title="Read Books"
-              description="Access our vast library of digital books and publications"
-              onClick={() => console.log('Read Books clicked')}
-              className="border-t-4 border-blue-600"
-            />
+        .book-cover {
+          width: 120px;
+          height: 160px;
+          object-fit: cover;
+          border-radius: 5px;
+        }
 
-            <FeatureCard
-              icon={PenTool}
-              title="Write & Publish"
-              description="Create and publish your own books and stories"
-              onClick={() => console.log('Write clicked')}
-              className="border-t-4 border-green-600"
-            />
+        .book-info {
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+        }
 
-            <FeatureCard
-              icon={Headphones}
-              title="Listen with AI"
-              description="Convert any text to natural-sounding speech"
-              onClick={() => startTextToSpeech('Sample text for speech synthesis')}
-              className="border-t-4 border-purple-600"
-            />
+        .book-card strong {
+          margin-top: 10px;
+          font-size: 1rem;
+          color: #000;
+        }
 
-            <FeatureCard
-              icon={Upload}
-              title="Import Books"
-              description="Import your existing digital books and documents"
-              onClick={() => console.log('Import clicked')}
-              className="border-t-4 border-orange-600"
-            />
+        .book-card span {
+          font-size: 0.9rem;
+          margin-top: 5px;
+          text-align: center;
+          color: #555;
+        }
+
+        .open-book-btn {
+          margin-top: 10px;
+          padding: 8px;
+          background: #007bff;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          width: 100%;
+          font-weight: bold;
+          text-decoration: none;
+        }
+
+        .open-book-btn:hover {
+          background: #0056b3;
+        }
+
+        .diary-section {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+        }
+
+        .diary-toggle {
+          font-size: 24px;
+          background: #007bff;
+          color: white;
+          border: none;
+          padding: 10px;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+
+        .diary-box {
+          margin-top: 10px;
+          background: white;
+          padding: 15px;
+          border-radius: 10px;
+          width: 280px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        textarea {
+          width: 100%;
+          min-height: 80px;
+          padding: 10px;
+          font-size: 1rem;
+          resize: none;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          margin-bottom: 10px;
+        }
+
+        .slider {
+          margin-top: 10px;
+          text-align: left;
+        }
+
+        @media (max-width: 600px) {
+          .booklist-container {
+            grid-template-columns: 1fr;
+          }
+
+          .diary-section {
+            position: static;
+            margin-top: 2rem;
+          }
+
+          .diary-box {
+            width: 100%;
+            max-width: 100%;
+          }
+        }
+      `}</style>
+
+      <h1 className="title">📚 Lifebox Library</h1>
+
+      <div className="selectors">
+        <select value={selectedLanguage} onChange={(e) => handleLanguageChange(e.target.value)}>
+          <option value="">Select Language</option>
+          {languages.map((lang, idx) => <option key={idx} value={lang}>{lang}</option>)}
+        </select>
+
+        <select value={selectedGenre} onChange={(e) => setSelectedGenre(e.target.value)}>
+          <option value="">Select Genre</option>
+          {genres.map((genre, idx) => <option key={idx} value={genre}>{genre}</option>)}
+        </select>
+
+        <button className="fetch-btn" onClick={fetchBooks}>Fetch Books</button>
+      </div>
+
+      <div className="booklist-container">
+        {(books.length > 0 ? books : myBooks).map((book, index) => (
+          <div key={index} className="book-card">
+            {book.cover_id && (
+              <img
+                src={`https://covers.openlibrary.org/b/id/${book.cover_id}-M.jpg`}
+                alt={book.title}
+                className="book-cover"
+                onError={(e) => e.target.style.display = 'none'}
+              />
+            )}
+            <div className="book-info">
+              <strong>{book.title}</strong>
+              <span>{book.authors?.map(author => author.name).join(', ') || book.content}</span>
+            </div>
+            {book.key && (
+              <a
+                href={`https://openlibrary.org${book.key}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="open-book-btn"
+              >
+                Open Book
+              </a>
+            )}
           </div>
-        </div>
+        ))}
+      </div>
 
-        {isPlaying && (
-          <div className="mt-6 bg-blue-50 p-4 rounded-lg animate-pulse">
-            <p className="text-sm text-blue-600">
-              Now playing: {currentBook}
-            </p>
+      <div className="diary-section">
+        <button className="diary-toggle" onClick={() => setDiaryVisible(!diaryVisible)}>✏️</button>
+        {diaryVisible && (
+          <div className="diary-box">
+            <textarea
+              placeholder="Write your main points or notes..."
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+            />
+            <button onClick={handleSaveNote} className="save-btn">Save Note</button>
+            <button onClick={handlePublishBook} className="convert-btn">Convert to Book</button>
+            <div className="slider">
+              <label>Voice Speed</label>
+              <input
+                type="range"
+                min="0.5"
+                max="2"
+                step="0.1"
+                value={voiceRate}
+                onChange={(e) => setVoiceRate(parseFloat(e.target.value))}
+              />
+            </div>
           </div>
         )}
-
-        <div className="mt-12 bg-white rounded-lg shadow-lg p-6">
-          <div className="flex flex-col md:flex-row items-center">
-            <div className="w-full md:w-1/2 p-4">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Recently Added</h3>
-              <p className="text-gray-600 mb-6">
-                You've added 24 new memories and 3 books this week. Here are some highlights from your recent additions.
-              </p>
-              <Link
-                to="/library/recent"
-                className="inline-block bg-blue-600 text-white px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold uppercase tracking-wide"
-              >
-                View All
-              </Link>
-            </div>
-            <div className="w-full md:w-1/2 grid grid-cols-2 gap-3 p-4">
-              <div className="aspect-square bg-gray-200 rounded-lg"></div>
-              <div className="aspect-square bg-gray-200 rounded-lg"></div>
-              <div className="aspect-square bg-gray-200 rounded-lg"></div>
-              <div className="aspect-square bg-gray-200 rounded-lg"></div>
-            </div>
-          </div>
-        </div>
       </div>
-    </section>
+    </div>
   );
-}
+};
 
 export default Library;
