@@ -19,38 +19,39 @@ import JoinVault from "./screens/JoinVault";
 import RecentLibrary from "./components/RecentLibrary";
 import UserDashboard from "./screens/UserDashboard";
 import Terms from "./components/Terms";
-import VideoEdit from "./pages/VideoEdit";
 import PhotoAlbumEditor from "./pages/PhotoAlbumEditor";
 import Memories from "./pages/Memories";
 
+
 function App() {
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<About />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/community" element={<Community />} />
-        <Route path="/dairy" element={<Dairy />} />
-        <Route path="/editing" element={<Editing />} />
-        <Route path="/memories" element={<Memories />} />
-        <Route path="/library" element={<Library />} />
-        <Route path="/timecapsule" element={<TimeCapsule />} />
-        <Route path="/saved" element={<SavedDiaries />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/create-vault" element={<CreateVault />} />
-        <Route path="/join-vault" element={<JoinVault />} />
-        <Route path="/library/recent" element={<RecentLibrary />} />
-        <Route path="/user-dashboard" element={<UserDashboard />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/video-trimming" element={<VideoEdit />} />
-        <Route path="/photo-album/new" element={<PhotoAlbumEditor />} />
-        <Route path="/protected" element={<ProtectedRoute />} />
-      </Routes>
-      {/* <Footer /> */}
-    </Router>
+    <div>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />}/>
+          <Route path="/login" element={<Login />}/>
+          <Route path="/register" element={<Register />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/dairy" element={<Dairy />} />\
+          <Route path="/editing" element={<Editing />} />
+          <Route path="/memories" element={<Memories />} />
+          <Route path="/library" element={<Library />} />
+          <Route path="/timecapsule" element={<TimeCapsule />} />
+          <Route path="/saved" element={<SavedDiaries />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/create-vault" element={<CreateVault />} />
+          <Route path="/join-vault" element={<JoinVault />} />
+          <Route path="/library/recent" element={<RecentLibrary />} />
+          <Route path="/user-dashboard" element={<UserDashboard />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route element={<ProtectedRoute />} />
+          <Route path="/video-trimming" element={<VideoEdit />} /> 
+          <Route path="/photo-album/new" element={<PhotoAlbumEditor />} />
+        </Routes>
+        <Footer />
+      </Router>
+    </div>
   );
 }
 
