@@ -1,47 +1,20 @@
-// import React from 'react';
-
-// function FeatureCard({ icon: Icon, title, description, onClick, className = '' }) {
-//   return (
-//     <div
-//       onClick={onClick}
-//       className={`bg-white rounded-lg shadow-md hover:shadow-lg p-6 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 ${className}`}
-//     >
-//       <div className="flex items-center mb-4">
-//         <div className="p-2 rounded-full bg-blue-100 text-blue-600">
-//           <Icon size={24} />
-//         </div>
-//       </div>
-//       <h3 className="text-lg font-semibold text-gray-900 mb-2">{title}</h3>
-//       <p className="text-gray-600 text-sm">{description}</p>
-//     </div>
-//   );
-// }
-
-// export default FeatureCard;
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Icon } from '@iconify/react'; // or use HeroIcons
 
-function FeatureCard({ icon: Icon, title, description, onClick, to, className = '' }) {
-  const Wrapper = to ? Link : 'div';
-  const wrapperProps = to
-    ? { to }
-    : { onClick };
-
+const FeatureCard = ({ title, description, icon }) => {
   return (
-    <Wrapper
-      {...wrapperProps}
-      className={`bg-white rounded-lg shadow-md hover:shadow-lg p-6 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 ${className}`}
-    >
-      <div className="flex items-center mb-4">
-        <div className="p-2 rounded-full bg-blue-100 text-blue-600">
-          <Icon size={24} />
+    <div className="bg-white hover:shadow-2xl transition-shadow duration-300 rounded-2xl p-5 shadow-md border border-gray-100">
+      <div className="flex items-center gap-4">
+        <div className="bg-blue-100 p-3 rounded-full">
+          <Icon icon={icon} className="text-blue-600 text-2xl" />
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+          <p className="text-sm text-gray-500">{description}</p>
         </div>
       </div>
-      <h3 className="text-lg font-semibold text-gray-900 mb-2">{title}</h3>
-      <p className="text-gray-600 text-sm">{description}</p>
-    </Wrapper>
+    </div>
   );
-}
+};
 
 export default FeatureCard;

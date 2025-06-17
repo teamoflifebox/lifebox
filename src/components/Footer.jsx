@@ -23,7 +23,7 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand and Description */}
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-white">MyApp</h2>
+            <h2 className="text-2xl font-bold text-white">Lifebox NextGen</h2>
             <p className="text-gray-400 text-sm leading-relaxed">
               Empowering creativity and connection through Dairy, Library, TimeCapsule, Editing, and Community features.
             </p>
